@@ -1,4 +1,4 @@
-: /* $XdotOrg: xc/programs/Xserver/hw/xfree86/input/mouse/mouse.c,v 1.80 2003/12/08 23:49:42 dawes Exp $ */
+/* $XdotOrg: xc/programs/Xserver/hw/xfree86/input/mouse/mouse.c,v 1.1.4.2.4.1 2004/03/04 17:48:05 eich Exp $ */
 /* $XFree86: xc/programs/Xserver/hw/xfree86/input/mouse/mouse.c,v 1.79 2003/11/03 05:11:48 tsi Exp $ */
 /*
  *
