@@ -1,4 +1,4 @@
-/* $XdotOrg: xc/programs/Xserver/hw/xfree86/input/mouse/mouse.c,v 1.1.4.2.4.2 2004/03/04 20:16:41 kaleb Exp $ */
+/* $XdotOrg: xc/programs/Xserver/hw/xfree86/input/mouse/mouse.c,v 1.1.4.1.2.1 2004/03/17 20:31:18 ago Exp $ */
 /* $XFree86: xc/programs/Xserver/hw/xfree86/input/mouse/mouse.c,v 1.79 2003/11/03 05:11:48 tsi Exp $ */
 /*
  *
@@ -373,17 +373,16 @@ static void
 MouseCommonOptions(InputInfoPtr pInfo)
 {
     MouseDevPtr pMse;
-    MessageType from = X_DEFAULT;
+    MessageType buttons_from = X_CONFIG;
     char *s;
     int origButtons;
 
     pMse = pInfo->private;
 
     pMse->buttons = xf86SetIntOption(pInfo->options, "Buttons", 0);
-    from = X_CONFIG;
     if (!pMse->buttons) {
 	pMse->buttons = MSE_DFLTBUTTONS;
-	from = X_DEFAULT;
+	buttons_from = X_DEFAULT;
     }
     origButtons = pMse->buttons;
 
@@ -395,7 +394,10 @@ MouseCommonOptions(InputInfoPtr pInfo)
     pMse->emulate3Timeout = xf86SetIntOption(pInfo->options,
 					     "Emulate3Timeout", 50);
     if (pMse->emulate3Buttons || pMse->emulate3ButtonsSoft) {
-	xf86Msg(X_CONFIG, "%s: Emulate3Buttons, Emulate3Timeout: %d\n",
+	MessageType from = X_CONFIG;
+	if (pMse->emulate3ButtonsSoft)
+	    from = X_DEFAULT;
+	xf86Msg(from, "%s: Emulate3Buttons, Emulate3Timeout: %d\n",
 		pInfo->name, pMse->emulate3Timeout);
     }
 
@@ -660,8 +662,8 @@ MouseCommonOptions(InputInfoPtr pInfo)
 		pInfo->name, wheelButton, pMse->wheelInertia);
     }
     if (origButtons != pMse->buttons)
-	from = X_CONFIG;
-    xf86Msg(from, "%s: Buttons: %d\n", pInfo->name, pMse->buttons);
+	buttons_from = X_CONFIG;
+    xf86Msg(buttons_from, "%s: Buttons: %d\n", pInfo->name, pMse->buttons);
     
 }
 /*
