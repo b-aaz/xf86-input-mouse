@@ -1,4 +1,4 @@
-/* $XdotOrg: xc/programs/Xserver/hw/xfree86/input/mouse/mouse.c,v 1.1.4.1.2.1 2004/03/17 20:31:18 ago Exp $ */
+/* $XdotOrg: xc/programs/Xserver/hw/xfree86/input/mouse/mouse.c,v 1.3 2004/07/24 17:35:39 herrb Exp $ */
 /* $XFree86: xc/programs/Xserver/hw/xfree86/input/mouse/mouse.c,v 1.79 2003/11/03 05:11:48 tsi Exp $ */
 /*
  *
@@ -1636,7 +1636,10 @@ MouseProc(DeviceIntPtr device, int what)
 	if (pInfo->fd == -1)
 	    xf86Msg(X_WARNING, "%s: cannot open input device\n", pInfo->name);
 	else {
-	    pMse->buffer = XisbNew(pInfo->fd, 64);
+	    if (pMse->xisbscale)
+		pMse->buffer = XisbNew(pInfo->fd, pMse->xisbscale * 4);
+	    else
+		pMse->buffer = XisbNew(pInfo->fd, 64);
 	    if (!pMse->buffer) {
 		xf86CloseSerial(pInfo->fd);
 		pInfo->fd = -1;
@@ -3568,7 +3571,7 @@ static XF86ModuleVersionInfo xf86MouseVersionRec =
     MODULEVENDORSTRING,
     MODINFOSTRING1,
     MODINFOSTRING2,
-    XF86_VERSION_CURRENT,
+    XORG_VERSION_CURRENT,
     1, 0, 0,
     ABI_CLASS_XINPUT,
     ABI_XINPUT_VERSION,
