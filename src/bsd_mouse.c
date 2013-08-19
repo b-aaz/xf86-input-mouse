@@ -407,7 +407,7 @@ wsconsReadInput(InputInfoPtr pInfo)
     n /= sizeof(struct wscons_event);
     while( n-- ) {
         int buttons = pMse->lastButtons;
-        int dx = 0, dy = 0, dz = 0, dw = 0;
+        int dx = 0, dy = 0, dz = 0, dw = 0, x, y;
         switch (event->type) {
         case WSCONS_EVENT_MOUSE_UP:
 #define BUTBIT (1 << (event->value <= 2 ? 2 - event->value : event->value))
@@ -431,6 +431,26 @@ wsconsReadInput(InputInfoPtr pInfo)
         case WSCONS_EVENT_MOUSE_DELTA_W:
             dw = event->value;
             break;
+#endif
+	case WSCONS_EVENT_MOUSE_ABSOLUTE_X:
+	    x = event->value;
+	    xf86PostMotionEvent(pInfo->dev, TRUE, 0, 1, x);
+	    ++event;
+	    continue;
+	case WSCONS_EVENT_MOUSE_ABSOLUTE_Y:
+	    y = event->value;
+	    xf86PostMotionEvent(pInfo->dev, TRUE, 1, 1, y);
+	    ++event;
+	    continue;
+#ifdef WSCONS_EVENT_MOUSE_ABSOLUTE_Z
+	case WSCONS_EVENT_MOUSE_ABSOLUTE_Z:
+	    ++event;
+	    continue;
+#endif
+#ifdef WSCONS_EVENT_MOUSE_ABSOLUTE_W
+	case WSCONS_EVENT_MOUSE_ABSOLUTE_W:
+	    ++event;
+	    continue;
 #endif
         default:
             LogMessageVerbSigSafe(X_WARNING, -1,
