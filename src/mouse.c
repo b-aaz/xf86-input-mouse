@@ -2082,12 +2082,23 @@ Emulate3ButtonsSoft(InputInfoPtr pInfo)
     if (!pMse->emulate3ButtonsSoft)
         return TRUE;
 
+#if defined(__NetBSD__) && defined(WSCONS_SUPPORT)
+    /*
+     * On NetBSD a wsmouse is a multiplexed device. Imagine a notebook
+     * with two-button mousepad, and an external USB mouse plugged in
+     * temporarily. After using button 3 on the external mouse and
+     * unplugging it again, the mousepad will still need to emulate
+     * 3 buttons.
+     */
+    return TRUE;
+#else
     LogMessageVerbSigSafe(X_INFO, 4,
         "mouse: 3rd Button detected: disabling emulate3Button\n");
 
     Emulate3ButtonsSetEnabled(pInfo, FALSE);
 
     return FALSE;
+#endif
 }
 
 static void MouseBlockHandler(pointer data,
