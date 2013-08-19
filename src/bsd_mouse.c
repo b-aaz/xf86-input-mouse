@@ -97,9 +97,7 @@ static const char *mouseDevs[] = {
 static int
 SupportedInterfaces(void)
 {
-#if defined(__NetBSD__)
-    return MSE_SERIAL | MSE_BUS | MSE_PS2 | MSE_AUTO;
-#elif defined(__FreeBSD__) || defined(__FreeBSD_kernel__) || defined(__DragonFly__)
+#if defined(__FreeBSD__) || defined(__FreeBSD_kernel__) || defined(__DragonFly__) || defined(__NetBSD__)
     return MSE_SERIAL | MSE_BUS | MSE_PS2 | MSE_AUTO | MSE_MISC;
 #else
     return MSE_SERIAL | MSE_BUS | MSE_PS2 | MSE_XPS2 | MSE_AUTO | MSE_MISC;
