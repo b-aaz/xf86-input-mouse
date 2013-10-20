@@ -74,6 +74,13 @@
 #include "mousePriv.h"
 #include "mipointer.h"
 
+/* Xorg >= 1.10 provides an asprintf() implementation even if libc doesn't */
+#include "xorgVersion.h"
+#if defined(HAVE_ASPRINTF) || \
+    (XORG_VERSION_CURRENT >= XORG_VERSION_NUMERIC(1,10,0,0,0))
+# define USE_ASPRINTF
+#endif
+
 enum {
     /* number of bits in mapped nibble */
     NIB_BITS=4,
@@ -441,20 +448,27 @@ MouseCommonOptions(InputInfoPtr pInfo)
         } else if (sscanf(s, "%d %d %d %d", &b1, &b2, &b3, &b4) >= 2 &&
                  b1 > 0 && b1 <= MSE_MAXBUTTONS &&
                  b2 > 0 && b2 <= MSE_MAXBUTTONS) {
-            msg = xstrdup("buttons XX and YY");
-            if (msg)
-                sprintf(msg, "buttons %d and %d", b1, b2);
             pMse->negativeZ = 1 << (b1-1);
             pMse->positiveZ = 1 << (b2-1);
             if (b3 > 0 && b3 <= MSE_MAXBUTTONS &&
                 b4 > 0 && b4 <= MSE_MAXBUTTONS) {
-                if (msg)
-                    free(msg);
-                msg = xstrdup("buttons XX, YY, ZZ and WW");
-                if (msg)
-                    sprintf(msg, "buttons %d, %d, %d and %d", b1, b2, b3, b4);
                 pMse->negativeW = 1 << (b3-1);
                 pMse->positiveW = 1 << (b4-1);
+#ifdef USE_ASPRINTF
+                if (asprintf(&msg, "buttons %d, %d, %d and %d",
+                             b1, b2, b3, b4) == -1)
+                    msg = NULL;
+#else
+                msg = Xprintf("buttons %d, %d, %d and %d", b1, b2, b3, b4);
+#endif
+            }
+            else {
+#ifdef USE_ASPRINTF
+                if (asprintf(&msg, "buttons %d and %d", b1, b2) == -1)
+                    msg = NULL;
+#else
+                msg = Xprintf("buttons %d and %d", b1, b2);
+#endif
             }
             if (b1 > pMse->buttons) pMse->buttons = b1;
             if (b2 > pMse->buttons) pMse->buttons = b2;
@@ -509,9 +523,12 @@ MouseCommonOptions(InputInfoPtr pInfo)
             if ((sscanf(s, "%d %d", &b1, &b2) == 2) &&
                  b1 > 0 && b1 <= MSE_MAXBUTTONS &&
                  b2 > 0 && b2 <= MSE_MAXBUTTONS) {
-                msg = xstrdup("buttons XX and YY");
-                if (msg)
-                    sprintf(msg, "buttons %d and %d", b1, b2);
+#ifdef USE_ASPRINTF
+                if (asprintf(&msg, "buttons %d and %d", b1, b2) == -1)
+                    msg = NULL;
+#else
+                msg = Xprintf("buttons %d and %d", b1, b2);
+#endif
                 pMse->negativeX = b1;
                 pMse->positiveX = b2;
                 if (b1 > pMse->buttons) pMse->buttons = b1;
@@ -534,9 +551,12 @@ MouseCommonOptions(InputInfoPtr pInfo)
             if ((sscanf(s, "%d %d", &b1, &b2) == 2) &&
                  b1 > 0 && b1 <= MSE_MAXBUTTONS &&
                  b2 > 0 && b2 <= MSE_MAXBUTTONS) {
-                msg = xstrdup("buttons XX and YY");
-                if (msg)
-                    sprintf(msg, "buttons %d and %d", b1, b2);
+#ifdef USE_ASPRINTF
+                if (asprintf(&msg, "buttons %d and %d", b1, b2) == -1)
+                    msg = NULL;
+#else
+                msg = Xprintf("buttons %d and %d", b1, b2);
+#endif
                 pMse->negativeY = b1;
                 pMse->positiveY = b2;
                 if (b1 > pMse->buttons) pMse->buttons = b1;
@@ -606,9 +626,12 @@ MouseCommonOptions(InputInfoPtr pInfo)
         if ((sscanf(s, "%d %d", &b1, &b2) == 2) &&
             (b1 > 0) && (b1 <= MSE_MAXBUTTONS) &&
             (b2 > 0) && (b2 <= MSE_MAXBUTTONS)) {
-            msg = xstrdup("buttons XX and YY");
-            if (msg)
-                sprintf(msg, "buttons %d and %d", b1, b2);
+#ifdef USE_ASPRINTF
+            if (asprintf(&msg, "buttons %d and %d", b1, b2) == -1)
+                msg = NULL;
+#else
+            msg = Xprintf("buttons %d and %d", b1, b2);
+#endif
             pMse->doubleClickTargetButton = b1;
             pMse->doubleClickTargetButtonMask = 1 << (b1 - 1);
             pMse->doubleClickSourceButtonMask = 1 << (b2 - 1);
