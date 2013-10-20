@@ -604,7 +604,8 @@ MouseCommonOptions(InputInfoPtr pInfo)
         char *msg = NULL;
 
         if ((sscanf(s, "%d %d", &b1, &b2) == 2) &&
-        (b1 > 0) && (b1 <= MSE_MAXBUTTONS) && (b2 > 0) && (b2 <= MSE_MAXBUTTONS)) {
+            (b1 > 0) && (b1 <= MSE_MAXBUTTONS) &&
+            (b2 > 0) && (b2 <= MSE_MAXBUTTONS)) {
             msg = xstrdup("buttons XX and YY");
             if (msg)
                 sprintf(msg, "buttons %d and %d", b1, b2);
@@ -2005,7 +2006,8 @@ buttonTimer(InputInfoPtr pInfo)
         xf86PostButtonEvent(pInfo->dev, 0, abs(id), (id >= 0), 0, 0);
         pMse->emulateState = stateTab[pMse->emulateState][4][2];
     } else {
-        LogMessageVerbSigSafe(X_WARNING, -1, "Got unexpected buttonTimer in state %d\n", pMse->emulateState);
+        LogMessageVerbSigSafe(X_WARNING, -1,
+            "Got unexpected buttonTimer in state %d\n", pMse->emulateState);
     }
 
     xf86UnblockSIGIO (sigstate);
@@ -2046,7 +2048,8 @@ Emulate3ButtonsSoft(InputInfoPtr pInfo)
     if (!pMse->emulate3ButtonsSoft)
         return TRUE;
 
-    LogMessageVerbSigSafe(X_INFO, 4, "mouse: 3rd Button detected: disabling emulate3Button\n");
+    LogMessageVerbSigSafe(X_INFO, 4,
+        "mouse: 3rd Button detected: disabling emulate3Button\n");
 
     Emulate3ButtonsSetEnabled(pInfo, FALSE);
 
@@ -2111,8 +2114,8 @@ MouseDoPostEvent(InputInfoPtr pInfo, int buttons, int dx, int dy)
     if (pMse->doubleClickSourceButtonMask) {
         if (buttons & pMse->doubleClickSourceButtonMask) {
             if (!(pMse->doubleClickOldSourceState)) {
-                /* double-click button has just been pressed. Ignore it if target button
-                 * is already down.
+                /* double-click button has just been pressed.
+                 * Ignore it if target button is already down.
                  */
                 if (!(buttons & pMse->doubleClickTargetButtonMask)) {
                     /* Target button isn't down, so send a double-click */
@@ -2154,8 +2157,10 @@ MouseDoPostEvent(InputInfoPtr pInfo, int buttons, int dx, int dy)
                      * If the button is released early enough emit the button
                      * press/release events
                      */
-                    xf86PostButtonEvent(pInfo->dev, 0, pMse->wheelButton, 1, 0, 0);
-                    xf86PostButtonEvent(pInfo->dev, 0, pMse->wheelButton, 0, 0, 0);
+                    xf86PostButtonEvent(pInfo->dev, 0, pMse->wheelButton,
+                                        1, 0, 0);
+                    xf86PostButtonEvent(pInfo->dev, 0, pMse->wheelButton,
+                                        0, 0, 0);
                 }
             }
         } else
@@ -2187,8 +2192,10 @@ MouseDoPostEvent(InputInfoPtr pInfo, int buttons, int dx, int dy)
                          */
                         if (!(emuWheelButtonMask & buttons) ||
                             (emuWheelButtonMask & wheelButtonMask)) {
-                            xf86PostButtonEvent(pInfo->dev, 0, emuWheelButton, 1, 0, 0);
-                            xf86PostButtonEvent(pInfo->dev, 0, emuWheelButton, 0, 0, 0);
+                            xf86PostButtonEvent(pInfo->dev, 0, emuWheelButton,
+                                                1, 0, 0);
+                            xf86PostButtonEvent(pInfo->dev, 0, emuWheelButton,
+                                                0, 0, 0);
                         }
                     }
                 }
@@ -2215,8 +2222,10 @@ MouseDoPostEvent(InputInfoPtr pInfo, int buttons, int dx, int dy)
                          */
                         if (!(emuWheelButtonMask & buttons) ||
                             (emuWheelButtonMask & wheelButtonMask)) {
-                            xf86PostButtonEvent(pInfo->dev, 0, emuWheelButton, 1, 0, 0);
-                            xf86PostButtonEvent(pInfo->dev, 0, emuWheelButton, 0, 0, 0);
+                            xf86PostButtonEvent(pInfo->dev, 0, emuWheelButton,
+                                                1, 0, 0);
+                            xf86PostButtonEvent(pInfo->dev, 0, emuWheelButton,
+                                                0, 0, 0);
                         }
                     }
                 }
@@ -2327,7 +2336,8 @@ MouseDoPostEvent(InputInfoPtr pInfo, int buttons, int dx, int dy)
                 stateTab[pMse->emulateState][emulateButtons][2];
 
             if (stateTab[pMse->emulateState][4][0] != 0) {
-                pMse->emulate3Expires = GetTimeInMillis () + pMse->emulate3Timeout;
+                pMse->emulate3Expires =
+                    GetTimeInMillis() + pMse->emulate3Timeout;
                 pMse->emulate3Pending = TRUE;
             } else {
                 pMse->emulate3Pending = FALSE;
