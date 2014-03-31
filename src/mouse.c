@@ -849,11 +849,8 @@ MousePickProtocol(InputInfoPtr pInfo, const char* device,
     {
         const char *osProt;
         if (osInfo->SetupAuto && (osProt = osInfo->SetupAuto(pInfo,NULL))) {
-            MouseProtocolID id = ProtocolNameToID(osProt);
-            if (id == PROT_UNKNOWN || id == PROT_UNSUP) {
-                protocolID = id;
-                protocol = osProt;
-            }
+            protocolID = ProtocolNameToID(osProt);
+            protocol = osProt;
         }
     }
 
