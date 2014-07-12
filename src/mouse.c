@@ -2660,7 +2660,7 @@ SetupMouse(InputInfoPtr pInfo)
 **
 ** NOTE: There are different versions of both MouseMan and TrackMan!
 **       Hence I add another protocol PROT_LOGIMAN, which the user can
-**       specify as MouseMan in his XF86Config file. This entry was
+**       specify as MouseMan in an xorg.conf file. This entry was
 **       formerly handled as a special case of PROT_MS. However, people
 **       who don't have the middle button problem, can still specify
 **       Microsoft and use PROT_MS.
