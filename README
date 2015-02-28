@@ -59,7 +59,7 @@
   This document describes mouse support in the xf86-input-mouse driver
   for the Xorg X server.   This driver is mainly used on non-Linux
   operating systems such as BSD & Solaris, as modern Linux systems use
-  the xf86-input-evdev driver instead.
+  the xf86-input-evdev or xf86-input-libinput drivers instead.
 
   Mouse configuration has often been mysterious task for novice users.
   However, once you learn several basics, it is straightforward to write
