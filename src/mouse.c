@@ -133,6 +133,14 @@ typedef struct _DragLockRec {
 #define HAVE_THREADED_INPUT	1
 #endif
 
+#if GET_ABI_MAJOR(ABI_XINPUT_VERSION) >= 24
+#define BLOCK_HANDLER_ARGS     	void *data, void *waitTime
+#define WAKEUP_HANDLER_ARGS	void *data, int i
+#else
+#define BLOCK_HANDLER_ARGS	pointer data, struct timeval **waitTime, pointer LastSelectMask
+#define WAKEUP_HANDLER_ARGS	void *data, int i, pointer LastSelectMask
+#endif
+
 #if GET_ABI_MAJOR(ABI_XINPUT_VERSION) < 12
 static InputInfoPtr MousePreInit(InputDriverPtr drv, IDevPtr dev, int flags);
 #else
@@ -144,9 +152,8 @@ static void MouseCtrl(DeviceIntPtr device, PtrCtrl *ctrl);
 static void MousePostEvent(InputInfoPtr pInfo, int buttons,
                            int dx, int dy, int dz, int dw);
 static void MouseReadInput(InputInfoPtr pInfo);
-static void MouseBlockHandler(pointer data, struct timeval **waitTime,
-                              pointer LastSelectMask);
-static void MouseWakeupHandler(pointer data, int i, pointer LastSelectMask);
+static void MouseBlockHandler(BLOCK_HANDLER_ARGS);
+static void MouseWakeupHandler(WAKEUP_HANDLER_ARGS);
 static void FlushButtons(MouseDevPtr pMse);
 
 static Bool SetupMouse(InputInfoPtr pInfo);
@@ -2112,9 +2119,7 @@ Emulate3ButtonsSoft(InputInfoPtr pInfo)
 #endif
 }
 
-static void MouseBlockHandler(pointer data,
-                              struct timeval **waitTime,
-                              pointer LastSelectMask)
+static void MouseBlockHandler(BLOCK_HANDLER_ARGS)
 {
     InputInfoPtr    pInfo = (InputInfoPtr) data;
     MouseDevPtr     pMse = (MouseDevPtr) pInfo->private;
@@ -2129,9 +2134,7 @@ static void MouseBlockHandler(pointer data,
     }
 }
 
-static void MouseWakeupHandler(pointer data,
-                               int i,
-                               pointer LastSelectMask)
+static void MouseWakeupHandler(WAKEUP_HANDLER_ARGS)
 {
     InputInfoPtr    pInfo = (InputInfoPtr) data;
     MouseDevPtr     pMse = (MouseDevPtr) pInfo->private;
