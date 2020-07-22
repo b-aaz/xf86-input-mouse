@@ -575,9 +575,12 @@ SynapticsReadEvent(InputInfoPtr pInfo, struct input_event *ev)
         ev->type = EV_SYN;
         ev->code = SYN_REPORT;
         ev->value = 0;
-        ev->time = last_event_time;
-    } else if (ev->type == EV_SYN)
-        last_event_time = ev->time;
+        ev->input_event_sec = last_event_time.tv_sec;
+        ev->input_event_usec = last_event_time.tv_usec;
+    } else if (ev->type == EV_SYN) {
+        last_event_time.tv_sec = ev->input_event_sec;
+        last_event_time.tv_usec = ev->input_event_usec;
+    }
 
     return TRUE;
 }
@@ -725,7 +728,7 @@ EventReadHwState(InputInfoPtr pInfo,
             case SYN_REPORT:
                 hw->numFingers = count_fingers(pInfo, comm);
                 if (proto_data->have_monotonic_clock)
-                    hw->millis = 1000 * ev.time.tv_sec + ev.time.tv_usec / 1000;
+                    hw->millis = 1000 * ev.input_event_sec + ev.input_event_usec / 1000;
                 else
                     hw->millis = GetTimeInMillis();
                 SynapticsCopyHwState(hwRet, hw);
