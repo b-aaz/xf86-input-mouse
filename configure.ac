@@ -32,7 +32,7 @@ AC_CONFIG_AUX_DIR(.)
 AC_USE_SYSTEM_EXTENSIONS
 
 # Initialize Automake
-AM_INIT_AUTOMAKE([foreign dist-bzip2])
+AM_INIT_AUTOMAKE([foreign dist-xz])
 
 # Initialize libtool
 AC_DISABLE_STATIC
