@@ -291,7 +291,7 @@ EventDeviceOffHook(InputInfoPtr pInfo)
 }
 
 /**
- * Test if the device on the file descriptior is recognized as touchpad
+ * Test if the device on the file descriptor is recognized as touchpad
  * device. Required bits for touchpad recognition are:
  * - ABS_X + ABS_Y for absolute axes
  * - ABS_PRESSURE or BTN_TOUCH
@@ -418,7 +418,7 @@ event_get_abs(struct libevdev *evdev, int code,
     *min = abs->minimum;
     *max = abs->maximum;
 
-    /* We dont trust a zero fuzz as it probably is just a lazy value */
+    /* We don't trust a zero fuzz as it probably is just a lazy value */
     if (fuzz && abs->fuzz > 0)
         *fuzz = abs->fuzz;
 #if LINUX_VERSION_CODE > KERNEL_VERSION(2,6,30)
