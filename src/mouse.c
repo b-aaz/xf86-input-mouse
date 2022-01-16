@@ -38,7 +38,7 @@
  */
 
 /*
- * [PME-02/08/11] Added suport for drag lock buttons
+ * [PME-02/08/11] Added support for drag lock buttons
  * for use with 4 button trackballs for convenience
  * and to help limited dexterity persons
  */
@@ -1195,7 +1195,7 @@ MouseReadInput(InputInfoPtr pInfo)
     /*
      * Set blocking to -1 on the first call because we know there is data to
      * read. Xisb automatically clears it after one successful read so that
-     * succeeding reads are preceeded by a select with a 0 timeout to prevent
+     * succeeding reads are preceded by a select with a 0 timeout to prevent
      * read from blocking indefinitely.
      */
     XisbBlockDuration(pMse->buffer, -1);
@@ -1255,11 +1255,11 @@ MouseReadInput(InputInfoPtr pInfo)
                  */
                 /*
                  * [KAZU-030897]
-                 * Receive the fourth byte only when preceeding three bytes
+                 * Receive the fourth byte only when preceding three bytes
                  * have been detected (pBufP >= pMse->protoPara[4]).  In the
                  * previous versions, the test was pBufP == 0; we may have
                  * mistakingly received a byte even if we didn't see anything
-                 * preceeding the byte.
+                 * preceding the byte.
                  */
 #ifdef EXTMOUSEDEBUG
                 LogMessageVerbSigSafe(X_INFO, -1, "mouse 4th byte %x\n",u);
@@ -1908,7 +1908,7 @@ FlushButtons(MouseDevPtr pMse)
  * action = 0: nothing
  * action < 0: ButtonRelease
  *
- * The comment preceeding each section is the current emulation state.
+ * The comment preceding each section is the current emulation state.
  * The comments to the right are of the form
  *      <button state> (<events>) -> <new emulation state>
  * which should be read as
@@ -2597,7 +2597,7 @@ SetupMouse(InputInfoPtr pInfo)
     if (pMse->protocolID == PROT_AUTO) {
         /*
          * We come here when user specifies protocol "auto" in
-         * the configuration file or thru the xf86misc extensions.
+         * the configuration file or through the xf86misc extensions.
          * So we initialize autoprobing here.
          * Probe for PnP/OS mouse first. If unsuccessful
          * try to guess protocol from incoming data.
@@ -3243,7 +3243,7 @@ autoOSProtocol(InputInfoPtr pInfo, int *protoPara)
                     /* Check for a builtin OS-specific protocol. */
                     if (osInfo->CheckProtocol && osInfo->CheckProtocol(name)) {
                         /* We can only come here if the protocol has been
-                         * changed to auto thru the xf86misc extension
+                         * changed to auto through the xf86misc extension
                          * and we have detected an OS specific builtin
                          * protocol. Currently we cannot handle this */
                         name = NULL;
