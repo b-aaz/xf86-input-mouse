@@ -286,10 +286,13 @@ vuidReadInput(InputInfoPtr pInfo)
     Bool absXset = FALSE, absYset = FALSE;
 
     pMse = pInfo->private;
-    pVuidMse = getVuidMsePriv(pInfo);
     buttons = pMse->lastButtons;
+    pVuidMse = getVuidMsePriv(pInfo);
+    if (pVuidMse == NULL) {
+        xf86Msg(X_ERROR, "%s: cannot locate VuidMsePtr\n", pInfo->name);
+        return;
+    }
     pBuf = pVuidMse->buffer;
-    n = 0;
 
     do {
         n = read(pInfo->fd, pBuf, sizeof(Firm_event));
