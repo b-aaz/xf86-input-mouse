@@ -3727,6 +3727,7 @@ autoGood(MouseDevPtr pMse)
     case AUTOPROBE_H_VALIDATE2:
         if (mPriv->goodCount < PROBE_UNCERTAINTY/2)
             return TRUE;
+        /* FALLTHROUGH */
     default:
         return FALSE;
     }
