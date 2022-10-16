@@ -46,7 +46,7 @@ XORG_DEFAULT_OPTIONS
 XORG_WITH_LINT
 
 # Checks for library functions
-AC_CHECK_FUNCS([asprintf])
+AC_CHECK_FUNCS([asprintf timingsafe_memcmp])
 
 # Obtain compiler/linker options from server and required extensions
 PKG_CHECK_MODULES(XORG, [xorg-server >= 1.7] xproto inputproto)
