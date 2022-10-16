@@ -176,12 +176,18 @@ static Bool autoGood(MouseDevPtr pMse);
 
 #undef MOUSE
 _X_EXPORT InputDriverRec MOUSE = {
-        1,
-        "mouse",
-        NULL,
-        MousePreInit,
-        NULL,
-        NULL,
+	.driverVersion		= 1,
+	.driverName		= "mouse",
+	.Identify		= NULL,
+	.PreInit		= MousePreInit,
+	.UnInit			= NULL,
+	.module			= NULL,
+#if GET_ABI_MAJOR(ABI_XINPUT_VERSION) >= 12
+	.default_options	= NULL,
+#if GET_ABI_MAJOR(ABI_XINPUT_VERSION) >= 21
+	.capabilities		= 0
+#endif
+#endif
 };
 
 #define RETRY_COUNT 4
