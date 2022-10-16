@@ -3755,8 +3755,9 @@ checkForErraticMovements(InputInfoPtr pInfo, int dx, int dy)
                 mPriv->acc = abs(mPriv->accDx);
                 AP_DBG(("acc=%i\n",mPriv->acc));
             }
-            else
+            else {
                 AP_DBG(("accDx=%i\n",mPriv->accDx));
+            }
         } else {
             mPriv->accDx = 0;
         }
@@ -3768,8 +3769,9 @@ checkForErraticMovements(InputInfoPtr pInfo, int dx, int dy)
             if (abs(mPriv->accDy) > mPriv->acc) {
                 mPriv->acc = abs(mPriv->accDy);
                 AP_DBG(("acc: %i\n",mPriv->acc));
-            } else
+            } else {
                 AP_DBG(("accDy=%i\n",mPriv->accDy));
+            }
         } else {
             mPriv->accDy = 0;
         }
