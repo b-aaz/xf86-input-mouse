@@ -2586,7 +2586,6 @@ static Bool
 SetupMouse(InputInfoPtr pInfo)
 {
     MouseDevPtr pMse;
-    int i;
     int protoPara[8] = {-1, -1, -1, -1, -1, -1, -1, -1};
     const char *name = NULL;
     Bool automatic = FALSE;
@@ -2617,7 +2616,7 @@ SetupMouse(InputInfoPtr pInfo)
     if (automatic) {
         if (name) {
             /* Possible protoPara overrides from SetupAuto. */
-            for (i = 0; i < sizeof(pMse->protoPara); i++)
+            for (size_t i = 0; i < sizeof(pMse->protoPara); i++)
                 if (protoPara[i] != -1)
                     pMse->protoPara[i] = protoPara[i];
             /* if we come here PnP/OS mouse probing was successful */
