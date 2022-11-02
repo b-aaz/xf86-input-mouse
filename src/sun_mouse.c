@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2004-2005, 2008-2010, Oracle and/or its affiliates.
- * All rights reserved.
+ * Copyright (c) 2004, 2022, Oracle and/or its affiliates.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -59,6 +58,8 @@
 #include <sys/stropts.h>
 #include <sys/vuid_event.h>
 #include <sys/msio.h>
+#include <fcntl.h>
+#include <errno.h>
 #include "xorg-server.h"
 #include "xf86.h"
 #include "xf86_OSlib.h"
