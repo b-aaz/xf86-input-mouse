@@ -742,8 +742,21 @@ vuidMouseProc(DeviceIntPtr pPointer, int what)
         }
         break;
 
-    case DEVICE_OFF:
     case DEVICE_CLOSE:
+        if (vuidMouseList == pVuidMse)
+            vuidMouseList = vuidMouseList->next;
+        else {
+            VuidMsePtr m = vuidMouseList;
+
+            while ((m != NULL) && (m->next != pVuidMse)) {
+                m = m->next;
+            }
+
+            if (m != NULL)
+                m->next = pVuidMse->next;
+        }
+        /* fallthrough */
+    case DEVICE_OFF:
         if (pInfo->fd != -1) {
             if (pVuidMse->strmod) {
                 SYSCALL(i = ioctl(pInfo->fd, I_POP, pVuidMse->strmod));
