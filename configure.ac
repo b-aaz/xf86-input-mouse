@@ -35,8 +35,7 @@ AC_USE_SYSTEM_EXTENSIONS
 AM_INIT_AUTOMAKE([foreign dist-xz])
 
 # Initialize libtool
-AC_DISABLE_STATIC
-AC_PROG_LIBTOOL
+LT_INIT([disable-static])
 
 # Initialize X.Org macros
 m4_ifndef([XORG_MACROS_VERSION],
