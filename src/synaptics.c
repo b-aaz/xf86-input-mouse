@@ -465,7 +465,7 @@ SynapticsIsSoftButtonAreasValid(int *values)
 }
 
 static void
-set_softbutton_areas_option(InputInfoPtr pInfo, char *option_name, int offset)
+set_softbutton_areas_option(InputInfoPtr pInfo, const char *option_name, int offset)
 {
     SynapticsPrivate *priv = pInfo->private;
     SynapticsParameters *pars = &priv->synpara;

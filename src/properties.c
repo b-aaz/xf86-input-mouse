@@ -97,8 +97,8 @@ Atom prop_product_id = 0;
 Atom prop_device_node = 0;
 
 static Atom
-InitTypedAtom(DeviceIntPtr dev, char *name, Atom type, int format, int nvalues,
-              int *values)
+InitTypedAtom(DeviceIntPtr dev, const char *name, Atom type, int format,
+              int nvalues, int *values)
 {
     int i;
     Atom atom;
@@ -142,13 +142,14 @@ InitTypedAtom(DeviceIntPtr dev, char *name, Atom type, int format, int nvalues,
 }
 
 static Atom
-InitAtom(DeviceIntPtr dev, char *name, int format, int nvalues, int *values)
+InitAtom(DeviceIntPtr dev, const char *name, int format,
+         int nvalues, int *values)
 {
     return InitTypedAtom(dev, name, XA_INTEGER, format, nvalues, values);
 }
 
 static Atom
-InitFloatAtom(DeviceIntPtr dev, char *name, int nvalues, float *values)
+InitFloatAtom(DeviceIntPtr dev, const char *name, int nvalues, float *values)
 {
     Atom atom;
 
