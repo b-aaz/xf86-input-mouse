@@ -193,7 +193,7 @@ parse_cmd(char *cmd, struct Parameter **par)
 
 /** Init display connection or NULL on error */
 static Display *
-dp_init()
+dp_init(void)
 {
     Display *dpy = NULL;
     XExtensionVersion *v = NULL;
