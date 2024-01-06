@@ -140,10 +140,6 @@ static void CalculateScalingCoeffs(SynapticsPrivate * priv);
 #endif
 static void SanitizeDimensions(InputInfoPtr pInfo);
 
-void InitDeviceProperties(InputInfoPtr pInfo);
-int SetProperty(DeviceIntPtr dev, Atom property, XIPropertyValuePtr prop,
-                BOOL checkonly);
-
 const static struct {
     const char *name;
     struct SynapticsProtocolOperations *proto_ops;

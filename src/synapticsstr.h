@@ -331,4 +331,8 @@ struct _SynapticsPrivateRec {
     int num_active_touches;     /* Number of active touches on device */
 };
 
+void InitDeviceProperties(InputInfoPtr pInfo);
+int SetProperty(DeviceIntPtr dev, Atom property, XIPropertyValuePtr prop,
+                BOOL checkonly);
+
 #endif                          /* _SYNAPTICSSTR_H_ */
