@@ -2671,7 +2671,11 @@ clickpad_guess_clickfingers(SynapticsPrivate * priv,
     uint32_t close_point = 0; /* 1 bit for each point close to another one */
     int i, j;
 
-    BUG_RETURN_VAL(hw->num_mt_mask > sizeof(close_point) * 8, 0);
+    if (hw->num_mt_mask > sizeof(close_point) * 8) {
+        ErrorFSigSafe("BUG: synaptics: hw->num_mt_mask too big %d\n", hw->num_mt_mask);
+        xorg_backtrace();
+        return 0;
+    }
 
     for (i = 0; i < hw->num_mt_mask - 1; i++) {
         ValuatorMask *f1;
