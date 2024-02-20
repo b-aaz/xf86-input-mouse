@@ -2937,7 +2937,12 @@ UpdateTouchState(InputInfoPtr pInfo, struct SynapticsHwState *hw)
         if (hw->slot_state[i] == SLOTSTATE_OPEN) {
             priv->open_slots[priv->num_active_touches] = i;
             priv->num_active_touches++;
-            BUG_WARN(priv->num_active_touches > priv->num_slots);
+            if (priv->num_active_touches > priv->num_slots) {
+                ErrorFSigSafe("BUG: synaptics: more active touches (%d) than slots (%d)\n",
+                    priv->num_active_touches,
+                    priv->num_slots);
+                xorg_backtrace();
+            }
         }
         else if (hw->slot_state[i] == SLOTSTATE_CLOSE) {
             Bool found = FALSE;
@@ -2951,7 +2956,11 @@ UpdateTouchState(InputInfoPtr pInfo, struct SynapticsHwState *hw)
                     priv->open_slots[j] = priv->open_slots[j + 1];
             }
 
-            BUG_WARN(priv->num_active_touches == 0);
+            if (priv->num_active_touches == 0) {
+                ErrorFSigSafe("BUG: synaptics: no active touches where there should be at least one\n");
+                xorg_backtrace();
+            }
+
             if (priv->num_active_touches > 0)
                 priv->num_active_touches--;
         }
