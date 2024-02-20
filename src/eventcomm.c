@@ -1033,7 +1033,7 @@ EventAutoDevProbe(InputInfoPtr pInfo, const char *device)
     }
 
     while (i--) {
-        char fname[64];
+        char fname[PATH_MAX];
         int fd = -1;
 
         if (!touchpad_found) {
