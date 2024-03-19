@@ -7,6 +7,7 @@
 #include "config.h"
 #endif
 
+#include <errno.h>
 #include <xorg-server.h>
 #include <X11/X.h>
 #include "xf86.h"

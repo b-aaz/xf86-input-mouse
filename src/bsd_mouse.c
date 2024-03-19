@@ -28,7 +28,9 @@
 
 #include <xorg-server.h>
 
+#include <errno.h>
 #include <X11/X.h>
+
 #include "xf86.h"
 #include "xf86Priv.h"
 #include "xf86_OSlib.h"
