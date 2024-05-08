@@ -117,7 +117,7 @@ lnxMouseMagic(InputInfoPtr pInfo)
             return NULL;
         }
         if (S_ISLNK(sbuf.st_mode)) {
-            realdev = xnfalloc(PATH_MAX + 1);
+            realdev = XNFalloc(PATH_MAX + 1);
             i = readlink(dev, realdev, PATH_MAX);
             if (i <= 0) {
 #ifdef DEBUG
@@ -134,7 +134,7 @@ lnxMouseMagic(InputInfoPtr pInfo)
     else {
         /* If realdev doesn't contain a '/' then prepend "/dev/" */
         if (!strchr(realdev, '/')) {
-            char *tmp = xnfalloc(strlen(realdev) + 5 + 1);
+            char *tmp = XNFalloc(strlen(realdev) + 5 + 1);
             sprintf(tmp, "/dev/%s", realdev);
             free(realdev);
             realdev = tmp;

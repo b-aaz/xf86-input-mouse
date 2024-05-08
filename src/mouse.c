@@ -3352,7 +3352,7 @@ createSerialDefaultsList(void)
 {
     int i = 0, j, k;
 
-    serialDefaultsList = (void **)xnfalloc(sizeof(void*));
+    serialDefaultsList = (void **)XNFalloc(sizeof(void*));
     serialDefaultsList[0] = NULL;
 
     for (j = 0; mouseProtocols[j].name; j++) {
