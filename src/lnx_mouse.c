@@ -130,7 +130,7 @@ lnxMouseMagic(InputInfoPtr pInfo)
         }
     }
     if (!realdev)
-        realdev = xnfstrdup(dev);
+        realdev = XNFstrdup(dev);
     else {
         /* If realdev doesn't contain a '/' then prepend "/dev/" */
         if (!strchr(realdev, '/')) {
