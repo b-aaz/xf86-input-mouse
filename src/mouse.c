@@ -3362,7 +3362,7 @@ createSerialDefaultsList(void)
             if (mouseProtocols[j].defaults == serialDefaultsList[k])
                 continue;
         i++;
-        serialDefaultsList = (void**)xnfrealloc(serialDefaultsList,
+        serialDefaultsList = (void**)XNFrealloc(serialDefaultsList,
                                                 sizeof(void*)*(i+1));
         serialDefaultsList[i-1] = mouseProtocols[j].defaults;
         serialDefaultsList[i] = NULL;
