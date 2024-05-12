@@ -47,6 +47,11 @@ XORG_ENABLE_UNIT_TESTS
 # Checks for libraries.
 AC_CHECK_LIB([m], [rint])
 
+# Checks for library functions
+# We don't use timingsafe_memcmp, but check to quiet -Wredundant-decls warning
+# from xorg/os.h which will otherwise redefine it.
+AC_CHECK_FUNCS([timingsafe_memcmp])
+
 # Store the list of server defined optional extensions in REQUIRED_MODULES
 m4_ifndef([XORG_DRIVER_CHECK_EXT],
           [m4_fatal([must install xorg-server development files before running autoconf/autogen])])
