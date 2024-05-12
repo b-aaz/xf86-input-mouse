@@ -135,7 +135,7 @@ static Bool QueryHardware(InputInfoPtr);
 static void ReadDevDimensions(InputInfoPtr);
 static void SanitizeDimensions(InputInfoPtr pInfo);
 
-const static struct {
+static const struct {
     const char *name;
     struct SynapticsProtocolOperations *proto_ops;
 } protocols[] = {
