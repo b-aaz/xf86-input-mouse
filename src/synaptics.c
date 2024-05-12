@@ -1130,10 +1130,13 @@ InitAxesLabels(Atom *labels, int nlabels, const SynapticsPrivate * priv)
     default:
     case 4:
         labels[3] = XIGetKnownProperty(AXIS_LABEL_PROP_REL_VSCROLL);
+        /* FALLTHROUGH */
     case 3:
         labels[2] = XIGetKnownProperty(AXIS_LABEL_PROP_REL_HSCROLL);
+        /* FALLTHROUGH */
     case 2:
         labels[1] = XIGetKnownProperty(AXIS_LABEL_PROP_REL_Y);
+        /* FALLTHROUGH */
     case 1:
         labels[0] = XIGetKnownProperty(AXIS_LABEL_PROP_REL_X);
         break;
@@ -1155,16 +1158,22 @@ InitButtonLabels(Atom *labels, int nlabels)
     default:
     case 7:
         labels[6] = XIGetKnownProperty(BTN_LABEL_PROP_BTN_HWHEEL_RIGHT);
+        /* FALLTHROUGH */
     case 6:
         labels[5] = XIGetKnownProperty(BTN_LABEL_PROP_BTN_HWHEEL_LEFT);
+        /* FALLTHROUGH */
     case 5:
         labels[4] = XIGetKnownProperty(BTN_LABEL_PROP_BTN_WHEEL_DOWN);
+        /* FALLTHROUGH */
     case 4:
         labels[3] = XIGetKnownProperty(BTN_LABEL_PROP_BTN_WHEEL_UP);
+        /* FALLTHROUGH */
     case 3:
         labels[2] = XIGetKnownProperty(BTN_LABEL_PROP_BTN_RIGHT);
+        /* FALLTHROUGH */
     case 2:
         labels[1] = XIGetKnownProperty(BTN_LABEL_PROP_BTN_MIDDLE);
+        /* FALLTHROUGH */
     case 1:
         labels[0] = XIGetKnownProperty(BTN_LABEL_PROP_BTN_LEFT);
         break;
