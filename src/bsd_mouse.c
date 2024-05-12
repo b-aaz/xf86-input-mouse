@@ -29,6 +29,7 @@
 #include <xorg-server.h>
 
 #include <errno.h>
+#include <sys/stat.h>
 #include <X11/X.h>
 
 #include "xf86.h"
