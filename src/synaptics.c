@@ -133,11 +133,6 @@ static int DeviceOff(DeviceIntPtr);
 static int DeviceClose(DeviceIntPtr);
 static Bool QueryHardware(InputInfoPtr);
 static void ReadDevDimensions(InputInfoPtr);
-#ifndef NO_DRIVER_SCALING
-static void ScaleCoordinates(SynapticsPrivate * priv,
-                             struct SynapticsHwState *hw);
-static void CalculateScalingCoeffs(SynapticsPrivate * priv);
-#endif
 static void SanitizeDimensions(InputInfoPtr pInfo);
 
 const static struct {
@@ -913,11 +908,6 @@ SynapticsPreInit(InputDriverPtr drv, InputInfoPtr pInfo, int flags)
     ReadDevDimensions(pInfo);
 
     set_default_parameters(pInfo);
-
-#ifndef NO_DRIVER_SCALING
-    CalculateScalingCoeffs(priv);
-#endif
-
 
     priv->comm.buffer = XisbNew(pInfo->fd, INPUT_BUFFER_SIZE);
 
@@ -3095,9 +3085,6 @@ HandleState(InputInfoPtr pInfo, struct SynapticsHwState *hw, CARD32 now,
          * calculations that require unadjusted coordinates, for example edge
          * detection.
          */
-#ifndef NO_DRIVER_SCALING
-        ScaleCoordinates(priv, hw);
-#endif
     }
 
     dx = dy = 0;
@@ -3208,35 +3195,3 @@ QueryHardware(InputInfoPtr pInfo)
 
     return TRUE;
 }
-
-#ifndef NO_DRIVER_SCALING
-static void
-ScaleCoordinates(SynapticsPrivate * priv, struct SynapticsHwState *hw)
-{
-    int xCenter = (priv->synpara.left_edge + priv->synpara.right_edge) / 2;
-    int yCenter = (priv->synpara.top_edge + priv->synpara.bottom_edge) / 2;
-
-    hw->x = (hw->x - xCenter) * priv->horiz_coeff + xCenter;
-    hw->y = (hw->y - yCenter) * priv->vert_coeff + yCenter;
-}
-
-void
-CalculateScalingCoeffs(SynapticsPrivate * priv)
-{
-    int vertRes = priv->synpara.resolution_vert;
-    int horizRes = priv->synpara.resolution_horiz;
-
-    if ((horizRes > vertRes) && (horizRes > 0)) {
-        priv->horiz_coeff = vertRes / (double) horizRes;
-        priv->vert_coeff = 1;
-    }
-    else if ((horizRes < vertRes) && (vertRes > 0)) {
-        priv->horiz_coeff = 1;
-        priv->vert_coeff = horizRes / (double) vertRes;
-    }
-    else {
-        priv->horiz_coeff = 1;
-        priv->vert_coeff = 1;
-    }
-}
-#endif
