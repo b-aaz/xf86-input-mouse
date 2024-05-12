@@ -80,13 +80,6 @@
 #include "mousePriv.h"
 #include "mipointer.h"
 
-/* Xorg >= 1.10 provides an asprintf() implementation even if libc doesn't */
-#include "xorgVersion.h"
-#if defined(HAVE_ASPRINTF) || \
-    (XORG_VERSION_CURRENT >= XORG_VERSION_NUMERIC(1,10,0,0,0))
-# define USE_ASPRINTF
-#endif
-
 enum {
     /* number of bits in mapped nibble */
     NIB_BITS=4,
@@ -141,12 +134,7 @@ typedef struct _DragLockRec {
 #define WAKEUP_HANDLER_ARGS	void *data, int i, pointer LastSelectMask
 #endif
 
-#if GET_ABI_MAJOR(ABI_XINPUT_VERSION) < 12
-static InputInfoPtr MousePreInit(InputDriverPtr drv, IDevPtr dev, int flags);
-#else
 static int MousePreInit(InputDriverPtr drv, InputInfoPtr pInfo, int flags);
-#endif
-
 static int MouseProc(DeviceIntPtr device, int what);
 static void MouseCtrl(DeviceIntPtr device, PtrCtrl *ctrl);
 static void MousePostEvent(InputInfoPtr pInfo, int buttons,
@@ -182,11 +170,9 @@ _X_EXPORT InputDriverRec MOUSE = {
 	.PreInit		= MousePreInit,
 	.UnInit			= NULL,
 	.module			= NULL,
-#if GET_ABI_MAJOR(ABI_XINPUT_VERSION) >= 12
 	.default_options	= NULL,
 #if GET_ABI_MAJOR(ABI_XINPUT_VERSION) >= 21
 	.capabilities		= 0
-#endif
 #endif
 };
 
@@ -477,21 +463,13 @@ MouseCommonOptions(InputInfoPtr pInfo)
                 b4 > 0 && b4 <= MSE_MAXBUTTONS) {
                 pMse->negativeW = 1 << (b3-1);
                 pMse->positiveW = 1 << (b4-1);
-#ifdef USE_ASPRINTF
                 if (asprintf(&msg, "buttons %d, %d, %d and %d",
                              b1, b2, b3, b4) == -1)
                     msg = NULL;
-#else
-                msg = Xprintf("buttons %d, %d, %d and %d", b1, b2, b3, b4);
-#endif
             }
             else {
-#ifdef USE_ASPRINTF
                 if (asprintf(&msg, "buttons %d and %d", b1, b2) == -1)
                     msg = NULL;
-#else
-                msg = Xprintf("buttons %d and %d", b1, b2);
-#endif
             }
             if (b1 > pMse->buttons) pMse->buttons = b1;
             if (b2 > pMse->buttons) pMse->buttons = b2;
@@ -546,12 +524,8 @@ MouseCommonOptions(InputInfoPtr pInfo)
             if ((sscanf(s, "%d %d", &b1, &b2) == 2) &&
                  b1 > 0 && b1 <= MSE_MAXBUTTONS &&
                  b2 > 0 && b2 <= MSE_MAXBUTTONS) {
-#ifdef USE_ASPRINTF
                 if (asprintf(&msg, "buttons %d and %d", b1, b2) == -1)
                     msg = NULL;
-#else
-                msg = Xprintf("buttons %d and %d", b1, b2);
-#endif
                 pMse->negativeX = b1;
                 pMse->positiveX = b2;
                 if (b1 > pMse->buttons) pMse->buttons = b1;
@@ -574,12 +548,8 @@ MouseCommonOptions(InputInfoPtr pInfo)
             if ((sscanf(s, "%d %d", &b1, &b2) == 2) &&
                  b1 > 0 && b1 <= MSE_MAXBUTTONS &&
                  b2 > 0 && b2 <= MSE_MAXBUTTONS) {
-#ifdef USE_ASPRINTF
                 if (asprintf(&msg, "buttons %d and %d", b1, b2) == -1)
                     msg = NULL;
-#else
-                msg = Xprintf("buttons %d and %d", b1, b2);
-#endif
                 pMse->negativeY = b1;
                 pMse->positiveY = b2;
                 if (b1 > pMse->buttons) pMse->buttons = b1;
@@ -649,12 +619,8 @@ MouseCommonOptions(InputInfoPtr pInfo)
         if ((sscanf(s, "%d %d", &b1, &b2) == 2) &&
             (b1 > 0) && (b1 <= MSE_MAXBUTTONS) &&
             (b2 > 0) && (b2 <= MSE_MAXBUTTONS)) {
-#ifdef USE_ASPRINTF
             if (asprintf(&msg, "buttons %d and %d", b1, b2) == -1)
                 msg = NULL;
-#else
-            msg = Xprintf("buttons %d and %d", b1, b2);
-#endif
             pMse->doubleClickTargetButton = b1;
             pMse->doubleClickTargetButtonMask = 1 << (b1 - 1);
             pMse->doubleClickSourceButtonMask = 1 << (b2 - 1);
@@ -905,49 +871,8 @@ MousePickProtocol(InputInfoPtr pInfo, const char* device,
     return protocol;
 }
 
-#if GET_ABI_MAJOR(ABI_XINPUT_VERSION) < 12
-static int NewMousePreInit(InputDriverPtr drv, InputInfoPtr pInfo,
-                           int flags);
-
-static InputInfoPtr
-MousePreInit(InputDriverPtr drv, IDevPtr dev, int flags)
-{
-    InputInfoPtr pInfo;
-
-    if (!(pInfo = xf86AllocateInput(drv, 0)))
-        return NULL;
-
-    pInfo->name = dev->identifier;
-    pInfo->flags = XI86_SEND_DRAG_EVENTS;
-    pInfo->conf_idev = dev;
-    pInfo->close_proc = NULL;
-    pInfo->private_flags = 0;
-    pInfo->always_core_feedback = NULL;
-
-    COLLECT_INPUT_OPTIONS(pInfo, NULL);
-
-    if (NewMousePreInit(drv, pInfo, flags) == Success)
-    {
-        /* Check if SendDragEvents has been disabled. */
-        if (!xf86SetBoolOption(dev->commonOptions, "SendDragEvents", TRUE))
-            pInfo->flags &= ~XI86_SEND_DRAG_EVENTS;
-
-        pInfo->flags |= XI86_CONFIGURED;
-
-        return pInfo;
-    }
-
-    xf86DeleteInput(pInfo, 0);
-
-    return NULL;
-}
-
-static int
-NewMousePreInit(InputDriverPtr drv, InputInfoPtr pInfo, int flags)
-#else
 static int
 MousePreInit(InputDriverPtr drv, InputInfoPtr pInfo, int flags)
-#endif
 {
     MouseDevPtr pMse;
     mousePrivPtr mPriv;
@@ -1022,15 +947,7 @@ MousePreInit(InputDriverPtr drv, InputInfoPtr pInfo, int flags)
 
     pMse->autoProbe = FALSE;
     /* Collect the options, and process the common options. */
-#if GET_ABI_MAJOR(ABI_XINPUT_VERSION) < 12
-    /* need some special handling here. xf86CollectInputOptions will reset
-     * pInfo->options if the second argument is not-null. To re-merge the
-     * previously set arguments, pass the original pInfo->options in.
-     */
-    xf86CollectInputOptions(pInfo, pProto->defaults, pInfo->options);
-#else
-    COLLECT_INPUT_OPTIONS(pInfo, pProto->defaults);
-#endif
+    xf86CollectInputOptions(pInfo, pProto->defaults);
     xf86ProcessCommonOptions(pInfo, pInfo->options);
 
     /* Check if the device can be opened. */
@@ -1749,20 +1666,12 @@ MouseProc(DeviceIntPtr device, int what)
         /* X valuator */
         xf86InitValuatorAxisStruct(device, 0,
                 axes_labels[0],
-                -1, -1, 1, 0, 1
-#if GET_ABI_MAJOR(ABI_XINPUT_VERSION) >= 12
-                , Relative
-#endif
-                );
+                -1, -1, 1, 0, 1, Relative);
         xf86InitValuatorDefaults(device, 0);
         /* Y valuator */
         xf86InitValuatorAxisStruct(device, 1,
                 axes_labels[1],
-                -1, -1, 1, 0, 1
-#if GET_ABI_MAJOR(ABI_XINPUT_VERSION) >= 12
-                , Relative
-#endif
-                );
+                -1, -1, 1, 0, 1, Relative);
         xf86InitValuatorDefaults(device, 1);
 
 #ifdef EXTMOUSEDEBUG
@@ -2783,7 +2692,7 @@ initMouseHW(InputInfoPtr pInfo)
             usleep(100000);
             /* Set the parameters up for the MM series protocol. */
             options = pInfo->options;
-            COLLECT_INPUT_OPTIONS(pInfo, mmDefaults);
+            xf86CollectInputOptions(pInfo, mmDefaults);
             xf86SetSerial(pInfo->fd, pInfo->options);
             pInfo->options = options;
 

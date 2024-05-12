@@ -254,9 +254,6 @@ vuidPreInit(InputInfoPtr pInfo, const char *protocol, int flags)
     pVuidMse->next = vuidMouseList;
     vuidMouseList = pVuidMse;
 
-#if GET_ABI_MAJOR(ABI_XINPUT_VERSION) < 12
-    pInfo->flags |= XI86_CONFIGURED;
-#endif
     return TRUE;
 }
 
