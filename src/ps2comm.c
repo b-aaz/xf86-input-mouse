@@ -78,7 +78,7 @@
 #ifdef DEBUG
 #define PS2DBG(...) ErrorF(__VA_ARGS__)
 #else
-#define PS2DBG(...)
+#define PS2DBG(...) do { } while (0)
 #endif
 
 /*****************************************************************************
