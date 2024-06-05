@@ -52,14 +52,22 @@ check-merge-request:
     extends:
       - .fdo.ci-fairy
     stage: test
-    script:
-      - ci-fairy check-merge-request --require-allow-collaboration --junit-xml=results.xml
+    script: |
+            if [[ "$CI_PIPELINE_SOURCE" == "merge_request_event" ]]; then
+                ci-fairy check-merge-request --require-allow-collaboration --junit-xml=results.xml
+            else
+                echo "skipped: not a merge request"
+            fi
+
     artifacts:
         when: on_failure
         reports:
             junit: results.xml
     allow_failure: true
-    needs:
+#    rules:
+#        - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+#    only:
+#        - merge_requests
 
 # create debian build image
 image@debian:
