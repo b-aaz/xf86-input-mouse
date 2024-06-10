@@ -421,10 +421,8 @@ event_get_abs(struct libevdev *evdev, int code,
     /* We don't trust a zero fuzz as it probably is just a lazy value */
     if (fuzz && abs->fuzz > 0)
         *fuzz = abs->fuzz;
-#if LINUX_VERSION_CODE > KERNEL_VERSION(2,6,30)
     if (res)
         *res = abs->resolution;
-#endif
 
     return 0;
 }
