@@ -897,7 +897,7 @@ MousePreInit(InputDriverPtr drv, InputInfoPtr pInfo, int flags)
     pInfo->dev = NULL;
 
     /* Allocate the MouseDevRec and initialise it. */
-    if (!(pMse = calloc(sizeof(MouseDevRec), 1)))
+    if (!(pMse = calloc(1, sizeof(MouseDevRec))))
     {
         rc = BadAlloc;
         goto out;
@@ -968,7 +968,7 @@ MousePreInit(InputDriverPtr drv, InputInfoPtr pInfo, int flags)
     xf86CloseSerial(pInfo->fd);
     pInfo->fd = -1;
 
-    if (!(mPriv = (pointer) calloc(sizeof(mousePrivRec), 1)))
+    if (!(mPriv = (pointer) calloc(1, sizeof(mousePrivRec))))
     {
         rc = BadAlloc;
         goto out;

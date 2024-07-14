@@ -225,7 +225,7 @@ vuidPreInit(InputInfoPtr pInfo, const char *protocol, int flags)
     if (getVuidMsePriv(pInfo) != NULL)
         return TRUE;
 
-    pVuidMse = calloc(sizeof(VuidMseRec), 1);
+    pVuidMse = calloc(1, sizeof(VuidMseRec));
     if (pVuidMse == NULL) {
         xf86Msg(X_ERROR, "%s: cannot allocate VuidMouseRec\n", pInfo->name);
         free(pMse);
@@ -928,7 +928,7 @@ OSMouseInit(int flags)
 {
     OSMouseInfoPtr p;
 
-    p = calloc(sizeof(OSMouseInfoRec), 1);
+    p = calloc(1, sizeof(OSMouseInfoRec));
     if (!p)
         return NULL;
     p->SupportedInterfaces = SupportedInterfaces;

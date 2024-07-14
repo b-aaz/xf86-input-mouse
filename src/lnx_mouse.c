@@ -210,7 +210,7 @@ OSMouseInit(int flags)
 {
     OSMouseInfoPtr p;
 
-    p = calloc(sizeof(OSMouseInfoRec), 1);
+    p = calloc(1, sizeof(OSMouseInfoRec));
     if (!p)
         return NULL;
     p->SupportedInterfaces = SupportedInterfaces;
