@@ -1039,8 +1039,6 @@ error:
 static void
 SynapticsReset(SynapticsPrivate * priv)
 {
-    int i;
-
     SynapticsResetHwState(priv->hwState);
     SynapticsResetHwState(priv->local_hw_state);
     SynapticsResetHwState(priv->comm.hwState);
@@ -1071,7 +1069,7 @@ SynapticsReset(SynapticsPrivate * priv)
     priv->prevFingers = 0;
     priv->num_active_touches = 0;
 
-    for (i = 0; i < priv->num_slots; i++)
+    for (int i = 0; i < priv->num_slots; i++)
         priv->open_slots[i] = -1;
 }
 
@@ -1123,8 +1121,6 @@ DeviceClose(DeviceIntPtr dev)
 static void
 InitAxesLabels(Atom *labels, int nlabels, const SynapticsPrivate * priv)
 {
-    int i;
-
     memset(labels, 0, nlabels * sizeof(Atom));
     switch (nlabels) {
     default:
@@ -1142,7 +1138,7 @@ InitAxesLabels(Atom *labels, int nlabels, const SynapticsPrivate * priv)
         break;
     }
 
-    for (i = 0; i < priv->num_mt_axes; i++) {
+    for (int i = 0; i < priv->num_mt_axes; i++) {
         SynapticsTouchAxisRec *axis = &priv->touch_axes[i];
         int axnum = nlabels - priv->num_mt_axes + i;
 
@@ -2632,7 +2628,6 @@ clickpad_guess_clickfingers(SynapticsPrivate * priv,
 {
     int nfingers = 0;
     uint32_t close_point = 0; /* 1 bit for each point close to another one */
-    int i, j;
 
     if (hw->num_mt_mask > sizeof(close_point) * 8) {
         ErrorFSigSafe("BUG: synaptics: hw->num_mt_mask too big %d\n", hw->num_mt_mask);
@@ -2640,7 +2635,7 @@ clickpad_guess_clickfingers(SynapticsPrivate * priv,
         return 0;
     }
 
-    for (i = 0; i < hw->num_mt_mask - 1; i++) {
+    for (int i = 0; i < hw->num_mt_mask - 1; i++) {
         ValuatorMask *f1;
 
         if (hw->slot_state[i] == SLOTSTATE_EMPTY ||
@@ -2649,7 +2644,7 @@ clickpad_guess_clickfingers(SynapticsPrivate * priv,
 
         f1 = hw->mt_mask[i];
 
-        for (j = i + 1; j < hw->num_mt_mask; j++) {
+        for (int j = i + 1; j < hw->num_mt_mask; j++) {
             ValuatorMask *f2;
             double x1, x2, y1, y2;
 
@@ -2873,7 +2868,7 @@ repeat_scrollbuttons(const InputInfoPtr pInfo,
 {
     SynapticsPrivate *priv = (SynapticsPrivate *) (pInfo->private);
     SynapticsParameters *para = &priv->synpara;
-    int repeat_delay, timeleft;
+    int repeat_delay;
     int rep_buttons = 0;
 
     if (para->updown_button_repeat)
@@ -2898,15 +2893,16 @@ repeat_scrollbuttons(const InputInfoPtr pInfo,
     }
 
     if (priv->repeatButtons) {
-        timeleft = TIME_DIFF(priv->nextRepeat, now);
+        int timeleft = TIME_DIFF(priv->nextRepeat, now);
         if (timeleft > 0)
             delay = MIN(delay, timeleft);
         if (timeleft <= 0) {
-            int change, id;
+            int change;
 
             change = priv->repeatButtons;
             while (change) {
-                id = ffs(change);
+                int id = ffs(change);
+
                 change &= ~(1 << (id - 1));
                 if (id == 4)
                     priv->scroll.delta_y -= para->scroll_dist_vert;
@@ -2931,9 +2927,8 @@ static void
 UpdateTouchState(InputInfoPtr pInfo, struct SynapticsHwState *hw)
 {
     SynapticsPrivate *priv = (SynapticsPrivate *) pInfo->private;
-    int i;
 
-    for (i = 0; i < hw->num_mt_mask; i++) {
+    for (int i = 0; i < hw->num_mt_mask; i++) {
         if (hw->slot_state[i] == SLOTSTATE_OPEN) {
             priv->open_slots[priv->num_active_touches] = i;
             priv->num_active_touches++;
@@ -2946,9 +2941,8 @@ UpdateTouchState(InputInfoPtr pInfo, struct SynapticsHwState *hw)
         }
         else if (hw->slot_state[i] == SLOTSTATE_CLOSE) {
             Bool found = FALSE;
-            int j;
 
-            for (j = 0; j < priv->num_active_touches - 1; j++) {
+            for (int j = 0; j < priv->num_active_touches - 1; j++) {
                 if (priv->open_slots[j] == i)
                     found = TRUE;
 
@@ -3007,7 +3001,7 @@ HandleState(InputInfoPtr pInfo, struct SynapticsHwState *hw, CARD32 now,
     SynapticsPrivate *priv = (SynapticsPrivate *) (pInfo->private);
     SynapticsParameters *para = &priv->synpara;
     enum FingerState finger = FS_UNTOUCHED;
-    int dx = 0, dy = 0, buttons, id;
+    int dx = 0, dy = 0, buttons;
     enum EdgeType edge = NO_EDGE;
     int change;
     int double_click = FALSE;
@@ -3139,7 +3133,7 @@ HandleState(InputInfoPtr pInfo, struct SynapticsHwState *hw, CARD32 now,
 
     change = buttons ^ priv->lastButtons;
     while (change) {
-        id = ffs(change);       /* number of first set bit 1..32 is returned */
+        int id = ffs(change);   /* number of first set bit 1..32 is returned */
         change &= ~(1 << (id - 1));
         xf86PostButtonEvent(pInfo->dev, FALSE, id, (buttons & (1 << (id - 1))),
                             0, 0);
