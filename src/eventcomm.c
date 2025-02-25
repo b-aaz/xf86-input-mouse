@@ -345,6 +345,7 @@ struct model_lookup_t {
 static struct model_lookup_t model_lookup_table[] = {
     {0x0002, 0x0007, 0x0007, MODEL_SYNAPTICS},
     {0x0002, 0x0008, 0x0008, MODEL_ALPS},
+    {0x06cb, PRODUCT_ANY, PRODUCT_ANY, MODEL_SYNAPTICS},
     {0x05ac, PRODUCT_ANY, 0x222, MODEL_APPLETOUCH},
     {0x05ac, 0x223, 0x228, MODEL_UNIBODY_MACBOOK},
     {0x05ac, 0x229, 0x22b, MODEL_APPLETOUCH},
