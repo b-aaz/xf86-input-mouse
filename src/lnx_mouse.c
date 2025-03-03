@@ -129,9 +129,13 @@ lnxMouseMagic(InputInfoPtr pInfo)
             realdev[i] = '\0';
         }
     }
-    if (!realdev)
-        realdev = XNFstrdup(dev);
-    else {
+    if (!realdev) {
+        realdev = strdup(dev);
+        if (!realdev) {
+            ErrorF("xf86SetStrOption failed to allocate memory (strdup)\n");
+            return NULL;
+        }
+    } else {
         /* If realdev doesn't contain a '/' then prepend "/dev/" */
         if (!strchr(realdev, '/')) {
             char *tmp = XNFalloc(strlen(realdev) + 5 + 1);
