@@ -450,10 +450,10 @@ MouseCommonOptions(InputInfoPtr pInfo)
         pMse->negativeW = pMse->positiveW = MSE_NOAXISMAP;
         if (!xf86NameCmp(s, "x")) {
             pMse->negativeZ = pMse->positiveZ = MSE_MAPTOX;
-            msg = xstrdup("X axis");
+            msg = strdup("X axis");
         } else if (!xf86NameCmp(s, "y")) {
             pMse->negativeZ = pMse->positiveZ = MSE_MAPTOY;
-            msg = xstrdup("Y axis");
+            msg = strdup("Y axis");
         } else if (sscanf(s, "%d %d %d %d", &b1, &b2, &b3, &b4) >= 2 &&
                  b1 > 0 && b1 <= MSE_MAXBUTTONS &&
                  b2 > 0 && b2 <= MSE_MAXBUTTONS) {
