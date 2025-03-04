@@ -14,17 +14,15 @@
      3.3 FreeBSD
      3.4 FreeBSD(98)
      3.5 Interactive Unix
-     3.6 Linux
-     3.7 Linux/98
-     3.8 LynxOS
-     3.9 NetBSD
-     3.10 NetBSD/pc98
-     3.11 OpenBSD
-     3.12 OS/2
-     3.13 SCO
-     3.14 Solaris
-     3.15 SVR4
-     3.16 PANIX
+     3.6 LynxOS
+     3.7 NetBSD
+     3.8 NetBSD/pc98
+     3.9 OpenBSD
+     3.10 OS/2
+     3.11 SCO
+     3.12 Solaris
+     3.13 SVR4
+     3.14 PANIX
 
   4. Configuring Your Mouse
   5. xorg.conf Options
@@ -57,9 +55,9 @@
 
 
   This document describes mouse support in the xf86-input-mouse driver
-  for the Xorg X server.   This driver is mainly used on non-Linux
-  operating systems such as BSD & Solaris, as modern Linux systems use
-  the xf86-input-evdev or xf86-input-libinput drivers instead.
+  for the Xorg X server. This driver is used on non-Linux operating
+  systems such as BSD & Solaris, as modern Linux systems use the
+  xf86-input-evdev or xf86-input-libinput drivers instead.
 
   Mouse configuration has often been mysterious task for novice users.
   However, once you learn several basics, it is straightforward to write
@@ -151,8 +149,6 @@
   FreeBSD           Ok        Ok        Ok        Ok        SP*1       SP*1
   FreeBSD(98)       Ok        ?         Ok        NA        NA         ?
   Interactive Unix  Ok        NA        ?*1       ?*1       NA         ?
-  Linux             Ok        Ok        Ok        Ok        Ok         ?
-  Linux/98          Ok        ?         Ok        NA        NA         ?
   LynxOS            Ok        NA        Ok        Ok        NA         ?
   NetBSD            Ok        Ok        Ok        SP*1      SP*1       SP*1
   NetBSD/pc98       Ok        ?         Ok        NA        NA         NA
@@ -221,23 +217,13 @@
   <mailto:michael.rohleder@stadt-frankfurt.de>
 
 
-  3.6.  Linux
-
-  All protocol types should work.
-
-
-  3.7.  Linux/98
-
-  The PS/2 mouse is not supported.
-
-
-  3.8.  LynxOS
+  3.6.  LynxOS
 
   The PnP serial mouse support (the "Auto" protocol) is disabled in
   LynxOS, because of limited TTY device driver functionality.
 
 
-  3.9.  NetBSD
+  3.7.  NetBSD
 
   NetBSD 1.3.x and former does not support extended PS/2 mouse protocols
   ("xxxPS/2").  The PS/2 mouse device driver /dev/pms emulates the bus
@@ -254,13 +240,13 @@
   page for details.
 
 
-  3.10.  NetBSD/pc98
+  3.8.  NetBSD/pc98
 
   The PS/2 mouse is not supported.
 
 
 
-  3.11.  OpenBSD
+  3.9.  OpenBSD
 
   The raw PS/2 mouse device driver /dev/psm0 uses the raw PS/2 mouse
   protocol.
@@ -283,7 +269,7 @@
   the device name.
 
 
-  3.12.  OS/2
+  3.10.  OS/2
 
   X11R7.5/OS2 always uses the native mouse driver of the operating
   system and will support any type of pointer that the OS supports,
@@ -293,14 +279,14 @@
   Always specify "OSMouse" as the protocol type.
 
 
-  3.13.  SCO
+  3.11.  SCO
 
   The bus and PS/2 mouse are supported with the "OSMouse" protocol type.
 
   The "OSMouse" may also be used with the serial mouse.
 
 
-  3.14.  Solaris
+  3.12.  Solaris
 
   Testing has been done with Solaris 10 and 11.
 
@@ -325,7 +311,7 @@
 
 
 
-  3.15.  SVR4
+  3.13.  SVR4
 
   The bus and PS/2 mouse may be supported with the "Xqueue" protocol
   type.
@@ -335,7 +321,7 @@
   The PnP serial mouse support (the "Auto" protocol) is not tested.
 
 
-  3.16.  PANIX
+  3.14.  PANIX
 
   The PC/AT version of PANIX supports the bus and PS/2 mouse with the
   "Xqueue" protocol type.  The PC-98 version of PANIX supports the bus
