@@ -361,7 +361,7 @@ MouseCommonOptions(InputInfoPtr pInfo)
                 xf86Msg(X_WARNING, "DragLock: Invalid button number = %d\n",
                         lock);
                 break;
-            };
+            }
             /* turn into a button mask */
             lockM = 1 << (lock - 1);
 
@@ -592,7 +592,7 @@ MouseCommonOptions(InputInfoPtr pInfo)
                xf86Msg(X_WARNING,
                        "ButtonMapping: Invalid button number = %d\n", b);
                break;
-           };
+           }
            pMse->buttonMap[n++] = 1 << (b-1);
            if (b > pMse->buttons) pMse->buttons = b;
        }
