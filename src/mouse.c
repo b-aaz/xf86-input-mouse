@@ -3215,6 +3215,11 @@ createProtoList(MouseDevPtr pMse, MouseProtocolID *protoList)
         AP_DBGC(("%2.2x ", (unsigned char) mPriv->data[i]));
     AP_DBGC(("\n"));
 
+    if (protoList == NULL) {
+        AP_DBG(("Skipping probe, protoList is NULL"));
+        return;
+    }
+
 #if HAVE_THREADED_INPUT
     input_lock();
 #else
