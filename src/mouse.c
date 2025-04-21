@@ -2626,13 +2626,13 @@ SetupMouse(InputInfoPtr pInfo)
 /*
  * Do a reset wrap mode before reset.
  */
-#define do_ps2Reset(x)  { \
+#define do_ps2Reset(x)  do { \
     int i = RETRY_COUNT;\
      while (i-- > 0) { \
        xf86FlushInput(x->fd); \
        if (ps2Reset(x)) break; \
     } \
-  }
+  } while (0)
 
 
 static Bool
@@ -3416,13 +3416,13 @@ validCount(mousePrivPtr mPriv, Bool inSync, Bool lostSync)
     return STATE_INVALID;
 }
 
-#define RESET_VALIDATION        mPriv->goodCount = PROBE_UNCERTAINTY;\
+#define RESET_VALIDATION   do { mPriv->goodCount = PROBE_UNCERTAINTY; \
                                 mPriv->badCount = 0;\
                                 mPriv->prevDx = 0;\
                                 mPriv->prevDy = 0;\
                                 mPriv->accDx = 0;\
                                 mPriv->accDy = 0;\
-                                mPriv->acc = 0;
+                                mPriv->acc = 0; } while (0)
 
 static void
 autoProbeMouse(InputInfoPtr pInfo, Bool inSync, Bool lostSync)
