@@ -968,7 +968,7 @@ MousePreInit(InputDriverPtr drv, InputInfoPtr pInfo, int flags)
     xf86CloseSerial(pInfo->fd);
     pInfo->fd = -1;
 
-    if (!(mPriv = (pointer) calloc(1, sizeof(mousePrivRec))))
+    if (!(mPriv = calloc(1, sizeof(mousePrivRec))))
     {
         rc = BadAlloc;
         goto out;
