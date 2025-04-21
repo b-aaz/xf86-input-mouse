@@ -711,10 +711,10 @@ ProtocolIDToName(MouseProtocolID id)
     switch (id) {
     case PROT_UNKNOWN:
         return "Unknown";
-        break;
+
     case PROT_UNSUP:
         return "Unsupported";
-        break;
+
     default:
         for (i = 0; mouseProtocols[i].name; i++)
             if (id == mouseProtocols[i].id)
@@ -732,7 +732,7 @@ ProtocolIDToClass(MouseProtocolID id)
     case PROT_UNKNOWN:
     case PROT_UNSUP:
         return MSE_NONE;
-        break;
+
     default:
         for (i = 0; mouseProtocols[i].name; i++)
             if (id == mouseProtocols[i].id)
@@ -749,7 +749,7 @@ GetProtocol(MouseProtocolID id) {
     case PROT_UNKNOWN:
     case PROT_UNSUP:
         return NULL;
-        break;
+
     default:
         for (i = 0; mouseProtocols[i].name; i++)
             if (id == mouseProtocols[i].id) {
