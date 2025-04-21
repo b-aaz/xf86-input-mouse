@@ -1214,7 +1214,7 @@ MouseReadInput(InputInfoPtr pInfo)
                 case PROT_GLIDE:
                 case PROT_THINKING:
                     buttons |= ((int)(u & 0x10) >> 1);
-                    /* fall through */
+                    _X_FALLTHROUGH; /* fall through */
 
                 default:
                     buttons |= ((int)(u & 0x20) >> 4) |
@@ -3641,7 +3641,7 @@ autoGood(MouseDevPtr pMse)
     case AUTOPROBE_H_VALIDATE2:
         if (mPriv->goodCount < PROBE_UNCERTAINTY/2)
             return TRUE;
-        /* FALLTHROUGH */
+        _X_FALLTHROUGH; /* FALLTHROUGH */
     default:
         return FALSE;
     }
