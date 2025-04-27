@@ -466,14 +466,14 @@ dp_show_settings(Display * dpy, XDevice * dev)
 }
 
 static void
-usage(void)
+usage(int exitstatus)
 {
     fprintf(stderr, "Usage: synclient [-h] [-l] [-V] [-?] [var1=value1 [var2=value2] ...]\n");
     fprintf(stderr, "  -l List current user settings\n");
     fprintf(stderr, "  -V Print synclient version string and exit\n");
     fprintf(stderr, "  -? Show this help message\n");
     fprintf(stderr, "  var=value  Set user parameter 'var' to 'value'.\n");
-    exit(1);
+    exit(exitstatus);
 }
 
 int
@@ -489,6 +489,17 @@ main(int argc, char *argv[])
     if (argc == 1)
         dump_settings = 1;
 
+    /* For now we only handle these two --options */
+    for (int n = 1; n < argc; n++) {
+        if (strcmp(argv[n], "--help") == 0) {
+            usage(EXIT_SUCCESS);
+        }
+        if (strcmp(argv[n], "--version") == 0) {
+            puts(VERSION);
+            exit(EXIT_SUCCESS);
+        }
+    }
+
     /* Parse command line parameters */
     while ((c = getopt(argc, argv, "lV?")) != -1) {
         switch (c) {
@@ -496,17 +507,18 @@ main(int argc, char *argv[])
             dump_settings = 1;
             break;
         case 'V':
-            printf("%s\n", VERSION);
-            exit(0);
+            puts(VERSION);
+            exit(EXIT_SUCCESS);
         case '?':
+            usage(EXIT_SUCCESS);
         default:
-            usage();
+            usage(EXIT_FAILURE);
         }
     }
 
     first_cmd = optind;
     if (!dump_settings && first_cmd == argc)
-        usage();
+        usage(EXIT_FAILURE);
 
     dpy = dp_init();
     if (!dpy || !(dev = dp_get_device(dpy)))

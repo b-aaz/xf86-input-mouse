@@ -76,7 +76,7 @@ static int verbose;
 static unsigned char keyboard_mask[KEYMAP_SIZE];
 
 static void
-usage(void)
+usage(int exitstatus)
 {
     fprintf(stderr,
             "Usage: syndaemon [-i idle-time] [-m poll-delay] [-d [-p pid-file]] [-tkKRv] [-V]\n");
@@ -96,7 +96,7 @@ usage(void)
     fprintf(stderr, "  -v Print diagnostic messages.\n");
     fprintf(stderr, "  -V Print version string and exit\n");
     fprintf(stderr, "  -? Show this help message.\n");
-    exit(1);
+    exit(exitstatus);
 }
 
 static void
@@ -571,6 +571,17 @@ main(int argc, char *argv[])
     int c;
     int use_xrecord = 0;
 
+    /* For now we only handle these two --options */
+    for (int n = 1; n < argc; n++) {
+        if (strcmp(argv[n], "--help") == 0) {
+            usage(EXIT_SUCCESS);
+        }
+        if (strcmp(argv[n], "--version") == 0) {
+            puts(VERSION);
+            exit(EXIT_SUCCESS);
+        }
+    }
+
     /* Parse command line parameters */
     while ((c = getopt(argc, argv, "i:m:dtp:kKR?vV")) != EOF) {
         switch (c) {
@@ -606,13 +617,17 @@ main(int argc, char *argv[])
             puts(VERSION);
             exit(EXIT_SUCCESS);
         case '?':
+            usage(EXIT_SUCCESS);
         default:
-            usage();
+            usage(1);
             break;
         }
     }
-    if (idle_time <= 0.0)
-        usage();
+    if (idle_time <= 0.0) {
+        fprintf(stderr, "%s: invalid idle_time %g, cannot be <= 0.0\n\n",
+                argv[0], idle_time);
+        usage(1);
+    }
 
     /* Open a connection to the X server */
     display = XOpenDisplay(NULL);
