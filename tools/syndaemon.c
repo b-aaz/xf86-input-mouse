@@ -79,7 +79,7 @@ static void
 usage(void)
 {
     fprintf(stderr,
-            "Usage: syndaemon [-i idle-time] [-m poll-delay] [-d] [-t] [-k]\n");
+            "Usage: syndaemon [-i idle-time] [-m poll-delay] [-d [-p pid-file]] [-tkKRv] [-V]\n");
     fprintf(stderr,
             "  -i How many seconds to wait after the last key press before\n");
     fprintf(stderr, "     enabling the touchpad. (default is 2.0s)\n");
@@ -94,6 +94,7 @@ usage(void)
     fprintf(stderr, "  -K Like -k but also ignore Modifier+Key combos.\n");
     fprintf(stderr, "  -R Use the XRecord extension.\n");
     fprintf(stderr, "  -v Print diagnostic messages.\n");
+    fprintf(stderr, "  -V Print version string and exit\n");
     fprintf(stderr, "  -? Show this help message.\n");
     exit(1);
 }
@@ -571,7 +572,7 @@ main(int argc, char *argv[])
     int use_xrecord = 0;
 
     /* Parse command line parameters */
-    while ((c = getopt(argc, argv, "i:m:dtp:kKR?v")) != EOF) {
+    while ((c = getopt(argc, argv, "i:m:dtp:kKR?vV")) != EOF) {
         switch (c) {
         case 'i':
             idle_time = atof(optarg);
@@ -601,6 +602,9 @@ main(int argc, char *argv[])
         case 'v':
             verbose = 1;
             break;
+        case 'V':
+            puts(VERSION);
+            exit(EXIT_SUCCESS);
         case '?':
         default:
             usage();

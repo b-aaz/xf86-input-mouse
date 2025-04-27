@@ -1,14 +1,16 @@
 .\" shorthand for double quote that works everywhere.
 .ds q \N'34'
-.TH SYNDAEMON __appmansuffix__ 2013-03-26 __vendorversion__
+.TH SYNDAEMON __appmansuffix__ 2025-04-27 __vendorversion__
 .SH NAME
 syndaemon \- a program that monitors keyboard activity and disables
 the touchpad when the keyboard is being used.
 .SH "SYNOPSIS"
 .nf
 \fBsyndaemon\fP [\fB\-i\fP \fIidle\-time\fP] [\fB\-m\fP \fIpoll-inverval\fP] \
-[\fB\-d\fP] [\fB\-p\fP \fIpid\-file\fP]
-          [\fB\-t\fP] [\fB\-k\fP] [\fB\-K\fP] [\fB\-R\fP]
+[\fB\-d\fP [\fB\-p\fP \fIpid\-file\fP]]
+          [\fB\-t\fP] [\fB\-k\fP] [\fB\-K\fP] [\fB\-R\fP] [\fB\-v\fP]
+
+\fBsyndaemon\fP [\fB\-V\fP|\fB\-?\fP]
 .fi
 .SH "DESCRIPTION"
 Disabling the touchpad while typing avoids unwanted movements of the
@@ -47,6 +49,12 @@ Like \fB\-k\fP but also ignore Modifier+Key combos.
 \fB\-R\fP
 Use the XRecord extension for detecting keyboard activity instead of polling
 the keyboard state.
+.TP
+\fB\-v\fP
+Print diagnostic messages.
+.TP
+\fB\-V\fP
+Print version string and exit.
 .TP
 \fB\-?\fP
 Show the help message.
