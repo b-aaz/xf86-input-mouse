@@ -1,6 +1,6 @@
 .\" shorthand for double quote that works everywhere.
 .ds q \N'34'
-.TH MOUSE __drivermansuffix__ __vendorversion__
+.TH MOUSE __drivermansuffix__ 2025-04-22 __vendorversion__
 .SH NAME
 mouse \- __xservername__ mouse input driver
 .SH SYNOPSIS
@@ -48,7 +48,7 @@ manufacturers.
 Despite the wide range of variations, there have been relatively
 few protocols (data format) with which the serial mouse talks
 to the host computer.
-
+.IP
 The modern serial mouse conforms to the PnP COM device specification
 so that the host computer can automatically detect the mouse
 and load an appropriate driver.
@@ -184,10 +184,10 @@ Default: 10.
 .TP 7
 .BI "Option \*qEmulateWheelTimeout\*q \*q" integer \*q
 Specifies the time in milliseconds the
-.BR EmulateWheelButton
+.B EmulateWheelButton
 must be pressed before wheel emulation is started.
 If the
-.BR EmulateWheelButton
+.B EmulateWheelButton
 is released before this timeout,
 the original button press/release event is sent.
 Default: 200.
@@ -212,9 +212,9 @@ is mapped to the negative Y axis motion and button number
 is mapped to the positive Y axis motion.
 Default: no mapping.
 .TP 7
-.BI "Option \*qZAxisMapping\*q \*qX\*q"
+.B "Option \*qZAxisMapping\*q \*qX\*q"
 .TP 7
-.BI "Option \*qZAxisMapping\*q \*qY\*q"
+.B "Option \*qZAxisMapping\*q \*qY\*q"
 .TP 7
 .BI "Option \*qZAxisMapping\*q \*q" "N1 N2" \*q
 .TP 7
@@ -255,7 +255,7 @@ This transformation is applied after the
 .BR InvX ,
 .BR InvY ,
 and
-.BR AngleOffset
+.B AngleOffset
 transformations.
 Default: off.
 .TP 7
@@ -341,7 +341,7 @@ the driver sets them correctly for each mouse protocol type.
 .BR Xserver (__appmansuffix__),
 .BR X (__miscmansuffix__),
 .BR README.mouse .
-
+.sp
 .BR hal (__miscmansuffix__),
 .BR hald (__adminmansuffix__),
 .BR fdi (__filemansuffix__).
